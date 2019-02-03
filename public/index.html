@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="vue.js" defer></script>
+    <script src="reconnecting-websocket-iife.js" defer></script>
+    <script src="vueMediumEditor.min.js" defer></script>
+    <link rel="stylesheet" href="medium-editor.min.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="vue">
+        <aside>
+            <h3>Projects</h3>
+            <div>
+                <div id="add-project" @click="addProject" class="aside-div">Add Project +</div>
+                <input type="search" placeholder="Filter..." style="width: 100%; padding-top: 0.5em; padding-bottom: 0.5em; outline: 0" v-model="projectFilter">
+                <div class="sidebar-scroll-container">
+                    <div v-for="project in filteredProjects" @click="switchProject(project.id)" :class="{ active: activeProjectId == project.id }" class="aside-div">{{ project.name }}</div>
+                </div>
+            </div>
+        </aside>
+        <main>
+            <template v-if="activeProject">
+                <div id="project-header">
+                    <button @click="deleteProject" style="float: right; margin-right: 1em">Delete Project</button>
+                    <button @click="openProjectFolder" style="float: right; margin-right: 2em">Open Project Folder</button>
+                    <medium-editor :text='activeProject.name' :options="projectEditOptions" v-on:edit='updateProjectName' custom-tag='h1'></medium-editor>
+                    <medium-editor :text='activeProject.path' :options="projectEditOptions" v-on:edit='updateProjectPath' custom-tag='h2'></medium-editor>
+                </div>
+                <div>
+                    <div id="project-container">
+                        <div>
+                            <h2>Development Setup
+                                <button @click="startDeveloping" :disabled="startDevelopingRunning">Start Developing</button>
+                                <div style="float: right; margin-right: 0.5em">
+                                    <button @click="deleteDevSetupCommand" :disabled="selectedDevSetupCommandId === null">Delete</button>
+                                    <button @click="moveUp('devSetupCommand')">Move Up</button>
+                                    <button @click="moveDown('devSetupCommand')">Move Down</button>
+                                </div>
+                            </h2>
+                            <div class="scroll-container">
+                                <div v-for="command in devSetup" @click="selectedDevSetupCommandId = command.id" :class="{ active: selectedDevSetupCommandId == command.id }">
+                                    <div class="index">{{ command.order }}</div>
+                                    <div class="content">{{ command.command }}</div>
+                                    <div class="status" v-if="command.status">{{ command.status }}</div>
+                                </div>
+                                <div class="disable-everything">
+                                    <form @submit.prevent="addDevSetup" class="form">
+                                        <div class="override"><input type="number" class="fit" style="width: 1.6em; padding-left: 0.5em;" required v-model="addDevSetupObject.order"></div>
+                                        <div class="override" style="width: 99%"><input type="text" class="fit" style="width: 99%" required v-model="addDevSetupObject.command"></div>
+                                        <div class="override" style="margin-left: auto"><button>Add</button></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h2>Helpers
+                                <button @click="runHelper" :disabled="selectedHelperId === null || helperRunning">Run</button>
+                                <div style="float: right; margin-right: 0.5em">
+                                    <button @click="deleteHelperCommand" :disabled="selectedHelperId === null">Delete</button>
+                                    <button @click="moveUp('helper')">Move Up</button>
+                                    <button @click="moveDown('helper')">Move Down</button>
+                                </div>
+                            </h2>
+                            <div class="scroll-container">
+                                <div v-for="helper in helpers" @click="selectedHelperId = helper.id" :class="{ active: selectedHelperId == helper.id }">
+                                    <div class="index">{{ helper.order }}</div>
+                                    <div class="content">{{ helper.command }}</div>
+                                </div>
+                                <div class="disable-everything">
+                                    <form @submit.prevent="addHelper" class="form">
+                                        <div class="override"><input type="number" class="fit" style="width: 1.6em; padding-left: 0.5em;" required v-model="addHelperObject.order"></div>
+                                        <div class="override" style="width: 99%"><input type="text" class="fit" style="width: 99%" required v-model="addHelperObject.command"></div>
+                                        <div class="override" style="margin-left: auto"><button>Add</button></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </main>
+    </div>
+</body>
+</html>

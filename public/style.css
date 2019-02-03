@@ -1,0 +1,124 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+#vue {
+    display: flex;
+    height: 100vh;
+}
+
+aside {
+    width: 358px;
+    box-shadow: 0 0 14px -3px black;
+}
+
+.aside-div {
+    padding: 0.5em;
+    background-color: #dcdfff;
+    border-bottom: 1px solid white;
+}
+
+.aside-div:hover {
+    background-color: #c4cdff;
+    cursor: pointer;
+}
+
+.aside-div.active {
+    background-color: #5860b0;
+    color: white;
+    cursor: pointer;
+    border-left: 10px solid white;
+}
+
+aside .sidebar-scroll-container {
+    overflow-y: auto;
+    height: 84.7vh;
+}
+
+#add-project {
+    margin-bottom: 1em;
+    user-select: none;
+}
+
+main {
+    width: 100%;
+}
+
+#project-header {
+    margin-left: 1em;
+}
+
+#project-container {
+    display: flex;
+    border-top: 10px solid darkblue;
+}
+
+#project-container > div {
+    height: 85.3vh;
+    width: 50%;
+    margin-left: 1em;
+}
+
+#project-container > div:first-child {
+    border-right: 10px solid darkblue;
+}
+
+button {
+    padding: 0.5em 1em;
+}
+
+.scroll-container {
+    height: 90.8%;
+    overflow-y: auto;
+}
+
+.scroll-container > div, .scroll-container form {
+    display: flex;
+    cursor: pointer;
+    border-bottom: 1px solid black;
+    position: relative;
+}
+
+.scroll-container > div.disable-everything {
+    display: block;
+    border-bottom: 0;
+}
+
+.scroll-container > div.active {
+    background-color: red;
+    color: white;
+}
+
+.scroll-container > div > div {
+    padding: 0.5em;
+}
+
+.scroll-container > div > div.override {
+    padding: 0;
+}
+
+button {
+    cursor: pointer;
+}
+
+.scroll-container > div > div.status {
+    position: absolute;
+    right: 0;
+    background-color: #0003;
+    width: 6em;
+    text-align: center;
+}
+
+input.fit {
+    height: 96%;
+    border: 0;
+    font: inherit;
+    outline: 0;
+}
+
+input.fit[type=number]::-webkit-inner-spin-button,
+input.fit[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
